@@ -24,6 +24,7 @@ import com.social.legoverse.databinding.LoginSignInBinding
 import com.social.legoverse.databinding.LoginStarterFragmentBinding
 import com.social.legoverse.util.AppDatabase
 import com.social.legoverse.util.Users
+import com.social.legoverse.view.CreateProfileActivity
 import com.social.legoverse.view.MainActivity
 import com.social.legoverse.view.TutorialActivity
 import kotlinx.coroutines.CoroutineScope
@@ -86,12 +87,25 @@ class LoginSignIn : Fragment(R.layout.login_sign_in) {
 
                     CoroutineScope(Dispatchers.IO).launch {
                         val database = AppDatabase.getDatabase(requireContext())
-                        val dao = database.folderDao()
+                        val dao = database.userDao()
+                        var isUserExist = dao.getSpecificUser(mailOrUsernameEdit.text.toString(), passwordEdit.text.toString())
 
-                        if(dao.getSpecificUser(mailOrUsernameEdit.text.toString(), passwordEdit.text.toString())){
+                        if(isUserExist != null){
                             Log.i(TAG, "LOGIN SUCCESS")
-                            val intent = Intent (requireContext(), MainActivity::class.java)
-                            startActivity(intent)
+
+                            if(isUserExist.userName != null){
+                                val intent = Intent (requireContext(), MainActivity::class.java)
+                                startActivity(intent)
+                                activity?.finish()
+                            }else{
+                                val intent = Intent (requireContext(), CreateProfileActivity::class.java)
+                                intent.putExtra("user_name_or_mail", isUserExist.mail.toString())
+                                startActivity(intent)
+                                activity?.finish()
+                            }
+
+
+
                         }else{
                             Log.i(TAG, "LOGIN ERROR")
                             activity?.runOnUiThread {

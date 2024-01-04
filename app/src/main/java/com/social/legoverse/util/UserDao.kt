@@ -5,14 +5,15 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM users")
     fun getAll(): List<Users>
 
-    @Query("SELECT * FROM users WHERE user_name_or_mail = :userName AND password = :password LIMIT 1")
-    fun getSpecificUser(userName: String?, password: String?): Boolean
+    @Query("SELECT * FROM users WHERE user_name = :userNameOrMail OR mail = :userNameOrMail AND password = :password LIMIT 1")
+    fun getSpecificUser(userNameOrMail: String?,  password: String?): Users?
 
     @Insert
     fun insert(folder: Users)
@@ -20,4 +21,9 @@ interface UserDao {
     @Delete
     fun delete(folder: Users)
 
+    @Update
+    fun update(user: Users)
+
+    @Query("SELECT * FROM users WHERE user_name = :userNameOrMail OR mail = :userNameOrMail LIMIT 1")
+    fun findUserByUsernameOrEmail(userNameOrMail: String): Users?
 }

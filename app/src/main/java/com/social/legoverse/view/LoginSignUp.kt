@@ -21,6 +21,7 @@ import com.social.legoverse.R
 import com.social.legoverse.databinding.LoginSignUpBinding
 import com.social.legoverse.util.AppDatabase
 import com.social.legoverse.util.Users
+import com.social.legoverse.view.CreateProfileActivity
 import com.social.legoverse.view.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -88,13 +89,15 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
                     CoroutineScope(Dispatchers.IO).launch {
                         try {
                             val database = AppDatabase.getDatabase(requireContext())
-                            val dao = database.folderDao()
+                            val dao = database.userDao()
 
-                            val newUser = Users(0, mailOrUsernameEdit.text.toString(), passwordEdit.text.toString())
+                            val newUser = Users(id= 0, mail = mailOrUsernameEdit.text.toString() , password = passwordEdit.text.toString())
                             dao.insert(newUser)
 
-                            val intent = Intent (requireContext(), MainActivity::class.java)
+
+                            val intent = Intent (requireContext(), CreateProfileActivity::class.java)
                             startActivity(intent)
+                            activity?.finish()
                         }catch (e: Exception){
                             e.message
 
