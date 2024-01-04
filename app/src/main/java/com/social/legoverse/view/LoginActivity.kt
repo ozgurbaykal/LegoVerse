@@ -3,6 +3,7 @@ package com.social.legoverse.view
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -12,12 +13,16 @@ import com.ozgurbaykal.hostmobile.view.LoginStarterFragment
 import com.social.legoverse.R
 import com.social.legoverse.databinding.ActivityLoginBinding
 import com.social.legoverse.manager.SharedPreferenceManager
+import com.social.legoverse.util.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
 
-
+    private val TAG = "_LoginActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +44,11 @@ class LoginActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
-                add<LoginStarterFragment>(R.id.login_fragment_view, "CustomFragmentTag")
+                add<LoginStarterFragment>(R.id.login_fragment_view, "LoginStarterFragmentTAG")
             }
         }
+
+
     }
 
     private fun changeFragment(fragment: Fragment, frameId: Int, tag: String) {
