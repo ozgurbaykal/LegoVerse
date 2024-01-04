@@ -41,7 +41,6 @@ class LoginActivity : AppCompatActivity() {
 
 
 
-
       if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
