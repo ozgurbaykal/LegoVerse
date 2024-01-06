@@ -22,6 +22,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.social.legoverse.R
 import com.social.legoverse.databinding.ActivityCreateProfileBinding
 import com.social.legoverse.util.AppDatabase
+import com.social.legoverse.util.UserNameOrMail
 import com.social.legoverse.util.Users
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -78,6 +79,7 @@ class CreateProfileActivity : AppCompatActivity() {
         createAccountButton.setOnClickListener {
             if(emptyInputControl(arrayListEditText)){
                 val usernameOrEmail = intent.getStringExtra("user_name_or_mail") ?: return@setOnClickListener
+                Log.i(TAG, "usernameOrEmail: $usernameOrEmail")
                 val profileImageBytes = imageUri?.let { uri -> uriToByteArray(uri) }
 
                 // Kullanıcı girişlerini al
@@ -96,6 +98,7 @@ class CreateProfileActivity : AppCompatActivity() {
                         // Güncellenecek kullanıcı bilgilerini ayarla
                         var updatedUser: Users
                         if(profileImageBytes!=null){
+                            Log.i(TAG, "profileImageBytes!=null")
                              updatedUser = user.copy(
                                 userName = userName,
                                 name = realName,
@@ -118,6 +121,9 @@ class CreateProfileActivity : AppCompatActivity() {
 
                         // Ana Activity'e dön
                         withContext(Dispatchers.Main) {
+                            Log.i(TAG, "AAAAA")
+
+                            UserNameOrMail.userNameOrMail = user.mail.toString()
                             val intent = Intent(this@CreateProfileActivity, MainActivity::class.java)
                             startActivity(intent)
                             finish()

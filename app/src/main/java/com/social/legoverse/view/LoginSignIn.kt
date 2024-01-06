@@ -23,6 +23,7 @@ import com.social.legoverse.databinding.FragmentTutorialPage1Binding
 import com.social.legoverse.databinding.LoginSignInBinding
 import com.social.legoverse.databinding.LoginStarterFragmentBinding
 import com.social.legoverse.util.AppDatabase
+import com.social.legoverse.util.UserNameOrMail
 import com.social.legoverse.util.Users
 import com.social.legoverse.view.CreateProfileActivity
 import com.social.legoverse.view.MainActivity
@@ -94,6 +95,8 @@ class LoginSignIn : Fragment(R.layout.login_sign_in) {
                             Log.i(TAG, "LOGIN SUCCESS")
 
                             if(isUserExist.userName != null){
+                                UserNameOrMail.userNameOrMail = mailOrUsernameEdit.text.toString()
+
                                 val intent = Intent (requireContext(), MainActivity::class.java)
                                 startActivity(intent)
                                 activity?.finish()

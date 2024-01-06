@@ -96,6 +96,7 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
 
 
                             val intent = Intent (requireContext(), CreateProfileActivity::class.java)
+                            intent.putExtra("user_name_or_mail", mailOrUsernameEdit.text.toString())
                             startActivity(intent)
                             activity?.finish()
                         }catch (e: Exception){

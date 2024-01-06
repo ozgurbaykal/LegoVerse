@@ -26,4 +26,7 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE user_name = :userNameOrMail OR mail = :userNameOrMail LIMIT 1")
     fun findUserByUsernameOrEmail(userNameOrMail: String): Users?
+
+    @Query("SELECT * FROM users WHERE id = :id  LIMIT 1")
+    fun findUserWithId(id: Int): Users?
 }

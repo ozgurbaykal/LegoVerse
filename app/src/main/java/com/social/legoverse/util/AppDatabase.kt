@@ -8,10 +8,12 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Users::class], version = 3)
+@Database(entities = [Users::class, Post::class, Like::class], version = 6)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
    abstract fun userDao(): UserDao
+    abstract fun postDao(): PostDao
+    abstract fun likeDao(): LikeDao
 
 
     companion object {
@@ -30,6 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                     "lego_verse_app_database"
                 )
                     .addMigrations(MIGRATION_2_3)
+                    .addMigrations(MIGRATION_5_6)
                     .build()
                 INSTANCE = instance
                 return instance
@@ -43,6 +46,17 @@ abstract class AppDatabase : RoomDatabase() {
                 // Add 'selected_file' column to 'CustomServerFolders' table
                 database.execSQL(
                     "ALTER TABLE users ADD COLUMN profile_image BLOB"
+                )
+            }
+        }
+
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+
+
+                // Add 'selected_file' column to 'CustomServerFolders' table
+                database.execSQL(
+                    "ALTER TABLE post ADD COLUMN project_name TEXT"
                 )
             }
         }
