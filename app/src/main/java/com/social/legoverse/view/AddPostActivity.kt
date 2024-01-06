@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.Toolbar
+import androidx.cardview.widget.CardView
 import com.ozgurbaykal.hostmobile.view.HomeFragment
 import com.social.legoverse.R
 import com.social.legoverse.databinding.ActivityAddPostBinding
@@ -38,6 +39,7 @@ class AddPostActivity : AppCompatActivity() {
     private lateinit var postDescription: EditText
     private lateinit var projectName: EditText
     private lateinit var shareButton: Button
+
     private  var  imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,37 +71,54 @@ class AddPostActivity : AppCompatActivity() {
             val postDescriptionText = postDescription.text.toString()
             val projectNameText = projectName.text.toString()
 
-            val postImageBytes = imageUri?.let { uri -> uriToByteArray(uri) }
+            if(postDescriptionText != "" && projectNameText != "" ){
+                if(imageUri != null){
+                    val postImageBytes = imageUri?.let { uri -> uriToByteArray(uri) }
 
 
-            val userDao = AppDatabase.getDatabase(applicationContext).userDao()
-            CoroutineScope(Dispatchers.IO).launch {
-            val user = userDao.findUserByUsernameOrEmail(UserNameOrMail.userNameOrMail)
+                    val userDao = AppDatabase.getDatabase(applicationContext).userDao()
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val user = userDao.findUserByUsernameOrEmail(UserNameOrMail.userNameOrMail)
 
-            user?.let {
-                Log.i(TAG, "shareButton clickListener in user")
+                        user?.let {
+                            Log.i(TAG, "shareButton clickListener in user")
 
-                val postDao = AppDatabase.getDatabase(applicationContext).postDao()
-                val newPost = Post(
-                    userId = it.id,
-                    image = postImageBytes,
-                    content = postDescriptionText,
-                    likes = 0,
-                    projectName = projectNameText
-                )
-                postDao.insertPost(newPost)
-                runOnUiThread {
-                    Toast.makeText(this@AddPostActivity, "Post shared successfully!", Toast.LENGTH_SHORT).show()
+                            val postDao = AppDatabase.getDatabase(applicationContext).postDao()
+                            val newPost = Post(
+                                userId = it.id,
+                                image = postImageBytes,
+                                content = postDescriptionText,
+                                likes = 0,
+                                projectName = projectNameText
+                            )
+                            postDao.insertPost(newPost)
+                            runOnUiThread {
+                                Toast.makeText(this@AddPostActivity, "Post shared successfully!", Toast.LENGTH_SHORT).show()
+                            }
+                            finish()
+                        } ?: run {
+                            runOnUiThread {
+                                Toast.makeText(this@AddPostActivity, "User not found!", Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                        }
+
+                    }
+                }else{
+                    runOnUiThread {
+                        Toast.makeText(this@AddPostActivity, "Please select profile photo", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                 }
-                finish()
-            } ?: run {
+
+            }else{
                 runOnUiThread {
-                    Toast.makeText(this@AddPostActivity, "User not found!", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@AddPostActivity, "Please fill all field", Toast.LENGTH_SHORT)
                         .show()
                 }
             }
 
-        }
+
         }
 
 

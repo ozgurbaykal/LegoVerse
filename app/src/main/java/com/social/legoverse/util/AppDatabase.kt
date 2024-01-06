@@ -8,13 +8,14 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Users::class, Post::class, Like::class], version = 6)
+@Database(entities = [Users::class, Post::class, Like::class, Comment::class], version = 7)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
    abstract fun userDao(): UserDao
     abstract fun postDao(): PostDao
     abstract fun likeDao(): LikeDao
 
+    abstract fun commentDao(): CommentDao
 
     companion object {
         @Volatile

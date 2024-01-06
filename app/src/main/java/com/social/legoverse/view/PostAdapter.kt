@@ -1,6 +1,7 @@
 package com.social.legoverse.view
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PorterDuff
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.social.legoverse.R
@@ -34,6 +36,7 @@ class PostAdapter(private val posts: List<Post>, private val context: Context) :
         val textViewLikeCount: TextView = view.findViewById(R.id.textViewLikeCount)
         val likeButton: ImageView = view.findViewById(R.id.likeButton)
         val textViewProjectNameContent: TextView = view.findViewById(R.id.textViewProjectName)
+        val postItemCard: CardView = view.findViewById(R.id.postItemCard)
 
     }
 
@@ -49,6 +52,15 @@ class PostAdapter(private val posts: List<Post>, private val context: Context) :
         holder.textViewPostContent.text = post.content
         holder.textViewProjectNameContent.text = post.projectName
         holder.textViewLikeCount.text = "${post.likes} Likes"
+
+        holder.postItemCard.setOnClickListener {
+            val intent = Intent (context, ViewPostActivity::class.java)
+            Log.i("PostAdapter", "post_id: ${post.postId}")
+            intent.putExtra("post_id", post.postId)
+            context.startActivity(intent)
+
+
+        }
 
         val userDao = AppDatabase.getDatabase(context).userDao()
         val postDao = AppDatabase.getDatabase(context).postDao()

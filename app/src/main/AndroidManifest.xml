@@ -19,6 +19,9 @@
             android:name=".view.CreateProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".view.ViewPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="false" />
         <activity
