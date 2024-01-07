@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -40,8 +41,10 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
     private lateinit var passwordEdit: EditText
     private lateinit var passwordAgainEdit: EditText
     private lateinit var createAccountButton: Button
+    private lateinit var keepMeLogIn: CheckBox
 
     private lateinit var goBackText: TextView
+    private var keepLogValue: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,6 +64,7 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
         passwordAgainEdit = binding.passwordAgain
         createAccountButton = binding.createAccountButton
         goBackText = binding.goBackText
+        keepMeLogIn = binding.keepMeLogCheckBox
 
         val arrayListEditText = ArrayList<EditText>()
         arrayListEditText.add(mailOrUsernameEdit)
@@ -91,7 +95,12 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
                             val database = AppDatabase.getDatabase(requireContext())
                             val dao = database.userDao()
 
-                            val newUser = Users(id= 0, mail = mailOrUsernameEdit.text.toString() , password = passwordEdit.text.toString())
+                            keepLogValue = keepMeLogIn.isChecked
+
+                            if(keepLogValue)
+                                dao.updateAllUsersKeepLogged(false)
+
+                            val newUser = Users(id= 0, mail = mailOrUsernameEdit.text.toString() , password = passwordEdit.text.toString(), keepLogged = keepLogValue)
                             dao.insert(newUser)
 
 
@@ -121,6 +130,8 @@ class LoginSignUp : Fragment(R.layout.login_sign_up) {
 
         return view
     }
+
+
 
     private fun emptyInputControl(editTextArray : ArrayList<EditText>) : Boolean{
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.LinearLayout
@@ -45,6 +46,7 @@ class LoginSignIn : Fragment(R.layout.login_sign_in) {
     private lateinit var passwordEdit: EditText
     private lateinit var loginButton: Button
     private lateinit var goBackText: TextView
+    private lateinit var keepMeLogIn: CheckBox
 
 
     override fun onAttach(context: Context) {
@@ -65,6 +67,7 @@ class LoginSignIn : Fragment(R.layout.login_sign_in) {
         passwordEdit = binding.etPassword
         loginButton = binding.loginButton
         goBackText = binding.goBackText
+        keepMeLogIn = binding.keepMeLogCheckBox
 
         val arrayListEditText = ArrayList<EditText>()
         arrayListEditText.add(mailOrUsernameEdit)
@@ -93,6 +96,17 @@ class LoginSignIn : Fragment(R.layout.login_sign_in) {
 
                         if(isUserExist != null){
                             Log.i(TAG, "LOGIN SUCCESS")
+
+                            if(keepMeLogIn.isChecked){
+                                dao.updateAllUsersKeepLogged(false)
+
+                                var updatedUser: Users = isUserExist.copy(
+                                    keepLogged = true
+                                )
+
+                                dao.update(updatedUser)
+
+                            }
 
                             if(isUserExist.userName != null){
                                 UserNameOrMail.userNameOrMail = mailOrUsernameEdit.text.toString()

@@ -131,17 +131,16 @@ class ViewPostActivity : AppCompatActivity() {
 
 
                         withContext(Dispatchers.Main) {
-                            commentAdapter.updateComments(commentsUpdated) // Adapter'a yeni listeyi ver
-                            recyclerView.scrollToPosition(commentsUpdated.size - 1) // Listeyi en son yoruma kaydır
+                            commentAdapter.updateComments(commentsUpdated)
+                            recyclerView.scrollToPosition(commentsUpdated.size - 1)
 
                             val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-                            // Klavyeyi gizleyin
                             inputMethodManager.hideSoftInputFromWindow(commentEdit.windowToken, 0)
 
                             commentEdit.setText("")
 
-                        }
+                         }
                         }
 
                     }

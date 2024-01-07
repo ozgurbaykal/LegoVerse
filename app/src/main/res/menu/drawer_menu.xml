@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:name="android:paddingLeft"
+        android:title="">16dp</item>
+
+
+    <item
+        android:id="@+id/UserName"
+        android:icon="@drawable/profile_photo"
+        android:title="UserName" />
+
+    <item
+        android:id="@+id/logOutAccount"
+        android:icon="@drawable/baseline_highlight_off_24"
+        android:title="Log out" />
+
+
+
+</menu>

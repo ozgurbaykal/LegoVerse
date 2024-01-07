@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
-@Database(entities = [Users::class, Post::class, Like::class, Comment::class], version = 7)
+@Database(entities = [Users::class, Post::class, Like::class, Comment::class], version = 8)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
    abstract fun userDao(): UserDao
@@ -34,6 +34,7 @@ abstract class AppDatabase : RoomDatabase() {
                 )
                     .addMigrations(MIGRATION_2_3)
                     .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_7_8)
                     .build()
                 INSTANCE = instance
                 return instance
@@ -58,6 +59,17 @@ abstract class AppDatabase : RoomDatabase() {
                 // Add 'selected_file' column to 'CustomServerFolders' table
                 database.execSQL(
                     "ALTER TABLE post ADD COLUMN project_name TEXT"
+                )
+            }
+        }
+
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+
+
+                // Add 'selected_file' column to 'CustomServerFolders' table
+                database.execSQL(
+                    "ALTER TABLE users ADD COLUMN keep_logged BOOLEAN"
                 )
             }
         }

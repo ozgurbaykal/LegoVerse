@@ -29,4 +29,10 @@ interface UserDao {
 
     @Query("SELECT * FROM users WHERE id = :id  LIMIT 1")
     fun findUserWithId(id: Int): Users?
+
+    @Query("UPDATE Users SET keep_logged = :keepLogged")
+    fun updateAllUsersKeepLogged(keepLogged: Boolean)
+
+    @Query("SELECT * FROM Users WHERE keep_logged = 1 LIMIT 1")
+    fun getLoggedInUser(): Users?
 }

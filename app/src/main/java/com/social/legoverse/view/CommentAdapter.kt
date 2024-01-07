@@ -69,7 +69,7 @@ class CommentAdapter(private var comments: List<Comment>, private val context: C
         }
     fun updateComments(newComments: List<Comment>) {
         this.comments = newComments
-        notifyDataSetChanged() // Veya daha spesifik bir notify metodu kullanabilirsiniz
+        notifyDataSetChanged()
     }
     override fun getItemCount(): Int {
         return comments.size

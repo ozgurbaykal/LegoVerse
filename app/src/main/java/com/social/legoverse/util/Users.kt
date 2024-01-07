@@ -19,6 +19,8 @@ data class Users (
     @ColumnInfo(name = "real_name") val name: String?= null,
     @ColumnInfo(name = "phone_number") val phoneNumber: String?= null,
     @ColumnInfo(name = "birthday") val birthday: Date?= null,
-    @ColumnInfo(name = "profile_image") val profileImage: ByteArray? = null
+    @ColumnInfo(name = "profile_image") val profileImage: ByteArray? = null,
+    @ColumnInfo(name = "keep_logged") val keepLogged: Boolean? = null
+
 )
 

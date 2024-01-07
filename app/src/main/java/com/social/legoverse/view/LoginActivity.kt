@@ -14,6 +14,7 @@ import com.social.legoverse.R
 import com.social.legoverse.databinding.ActivityLoginBinding
 import com.social.legoverse.manager.SharedPreferenceManager
 import com.social.legoverse.util.AppDatabase
+import com.social.legoverse.util.UserNameOrMail
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +38,26 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent (this@LoginActivity, TutorialActivity::class.java)
             startActivity(intent)
         }
+        CoroutineScope(Dispatchers.IO).launch {
+            val database = AppDatabase.getDatabase(this@LoginActivity)
+            val dao = database.userDao()
+
+            if (dao.getLoggedInUser()?.keepLogged == true){
+                if(dao.getLoggedInUser()?.userName != null){
+                    UserNameOrMail.userNameOrMail = dao.getLoggedInUser()?.mail.toString()
+
+                    val intent = Intent (this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    val intent = Intent (this@LoginActivity, CreateProfileActivity::class.java)
+                    intent.putExtra("user_name_or_mail", dao.getLoggedInUser()?.mail.toString())
+                    startActivity(intent)
+                    finish()
+                }
+            }
+        }
+
 
 
         //BUNU SONRA BURDAN KALDIR ŞİMDİLİK GİRİŞİ ATLIYORUZ.
