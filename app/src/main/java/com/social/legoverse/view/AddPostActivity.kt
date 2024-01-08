@@ -106,7 +106,7 @@ class AddPostActivity : AppCompatActivity() {
                     }
                 }else{
                     runOnUiThread {
-                        Toast.makeText(this@AddPostActivity, "Please select profile photo", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@AddPostActivity, "Please select image", Toast.LENGTH_SHORT)
                             .show()
                     }
                 }

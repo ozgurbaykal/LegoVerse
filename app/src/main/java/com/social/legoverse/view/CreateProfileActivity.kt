@@ -82,58 +82,65 @@ class CreateProfileActivity : AppCompatActivity() {
                 Log.i(TAG, "usernameOrEmail: $usernameOrEmail")
                 val profileImageBytes = imageUri?.let { uri -> uriToByteArray(uri) }
 
-                // Kullanıcı girişlerini al
-                val realName = realNameEdit.text.toString()
-                val userName = userNameEdit.text.toString()
-                val phone = phoneNumber.text.toString()
-                val birthdayValue: Date = selectedDate
+                if(profileImageBytes != null){
+                    // Kullanıcı girişlerini al
+                    val realName = realNameEdit.text.toString()
+                    val userName = userNameEdit.text.toString()
+                    val phone = phoneNumber.text.toString()
+                    val birthdayValue: Date = selectedDate
 
-                // Arka planda database güncelleme işlemini yap
-                val userDao = AppDatabase.getDatabase(applicationContext).userDao()
+                    // Arka planda database güncelleme işlemini yap
+                    val userDao = AppDatabase.getDatabase(applicationContext).userDao()
 
-                GlobalScope.launch {
-                    // Kullanıcıyı username veya email ile bul
-                    val user = userDao.findUserByUsernameOrEmail(usernameOrEmail)
-                    if (user != null) {
-                        // Güncellenecek kullanıcı bilgilerini ayarla
-                        var updatedUser: Users
-                        if(profileImageBytes!=null){
-                            Log.i(TAG, "profileImageBytes!=null")
-                             updatedUser = user.copy(
-                                userName = userName,
-                                name = realName,
-                                phoneNumber =  phone,
-                                birthday = birthdayValue,
-                                profileImage = profileImageBytes
-                            )
+                    GlobalScope.launch {
+                        // Kullanıcıyı username veya email ile bul
+                        val user = userDao.findUserByUsernameOrEmail(usernameOrEmail)
+                        if (user != null) {
+                            // Güncellenecek kullanıcı bilgilerini ayarla
+                            var updatedUser: Users
+                            if(profileImageBytes!=null){
+                                Log.i(TAG, "profileImageBytes!=null")
+                                updatedUser = user.copy(
+                                    userName = userName,
+                                    name = realName,
+                                    phoneNumber =  phone,
+                                    birthday = birthdayValue,
+                                    profileImage = profileImageBytes
+                                )
 
-                        }else{
-                             updatedUser = user.copy(
-                                userName = userName,
-                                name = realName,
-                                phoneNumber =  phone,
-                                birthday = birthdayValue,
-                            )
-                        }
+                            }else{
+                                updatedUser = user.copy(
+                                    userName = userName,
+                                    name = realName,
+                                    phoneNumber =  phone,
+                                    birthday = birthdayValue,
+                                )
+                            }
 
-                        // Kullanıcıyı güncelle
-                        userDao.update(updatedUser)
+                            // Kullanıcıyı güncelle
+                            userDao.update(updatedUser)
 
-                        // Ana Activity'e dön
-                        withContext(Dispatchers.Main) {
-                            Log.i(TAG, "AAAAA")
+                            // Ana Activity'e dön
+                            withContext(Dispatchers.Main) {
+                                Log.i(TAG, "AAAAA")
 
-                            UserNameOrMail.userNameOrMail = user.mail.toString()
-                            val intent = Intent(this@CreateProfileActivity, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            Toast.makeText(this@CreateProfileActivity, "User not found", Toast.LENGTH_SHORT).show()
+                                UserNameOrMail.userNameOrMail = user.mail.toString()
+                                val intent = Intent(this@CreateProfileActivity, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                        } else {
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(this@CreateProfileActivity, "User not found", Toast.LENGTH_SHORT).show()
+                            }
                         }
                     }
+                }else{
+                        Toast.makeText(this@CreateProfileActivity, "Please select image", Toast.LENGTH_SHORT).show()
+
                 }
+
+
             }
         }
 
@@ -182,7 +189,6 @@ class CreateProfileActivity : AppCompatActivity() {
         val month = calendar.get(Calendar.MONTH)
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        // DatePickerDialog oluştur
         val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
 
             birthDay.setText(String.format(Locale.getDefault(), "%02d/%02d/%04d", selectedDay, selectedMonth + 1, selectedYear))

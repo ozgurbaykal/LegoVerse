@@ -93,6 +93,7 @@
         android:textColorHint="@color/low_white"
         android:singleLine="true"
         android:maxLength="15"
+        android:inputType="phone"
         android:layout_marginTop="30dp"
         android:padding="14dp" />
 

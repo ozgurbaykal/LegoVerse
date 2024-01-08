@@ -43,9 +43,6 @@ abstract class AppDatabase : RoomDatabase() {
 
         val MIGRATION_2_3 = object : Migration(2, 3) {
             override fun migrate(database: SupportSQLiteDatabase) {
-
-
-                // Add 'selected_file' column to 'CustomServerFolders' table
                 database.execSQL(
                     "ALTER TABLE users ADD COLUMN profile_image BLOB"
                 )
@@ -54,9 +51,6 @@ abstract class AppDatabase : RoomDatabase() {
 
         val MIGRATION_5_6 = object : Migration(5, 6) {
             override fun migrate(database: SupportSQLiteDatabase) {
-
-
-                // Add 'selected_file' column to 'CustomServerFolders' table
                 database.execSQL(
                     "ALTER TABLE post ADD COLUMN project_name TEXT"
                 )
@@ -65,9 +59,6 @@ abstract class AppDatabase : RoomDatabase() {
 
         val MIGRATION_7_8 = object : Migration(7, 8) {
             override fun migrate(database: SupportSQLiteDatabase) {
-
-
-                // Add 'selected_file' column to 'CustomServerFolders' table
                 database.execSQL(
                     "ALTER TABLE users ADD COLUMN keep_logged BOOLEAN"
                 )

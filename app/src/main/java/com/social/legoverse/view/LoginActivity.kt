@@ -58,12 +58,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
-
-        //BUNU SONRA BURDAN KALDIR ŞİMDİLİK GİRİŞİ ATLIYORUZ.
-        /*val intent = Intent (this@LoginActivity, MainActivity::class.java)
-        startActivity(intent)*/
-
       if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)

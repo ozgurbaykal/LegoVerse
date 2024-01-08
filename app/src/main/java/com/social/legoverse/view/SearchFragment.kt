@@ -64,11 +64,9 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
         searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Bu metodu boş bırakabilirsiniz
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Bu metodu boş bırakabilirsiniz
             }
 
             override fun afterTextChanged(s: Editable?) {

@@ -150,11 +150,6 @@ class MainActivity : AppCompatActivity() {
 
                     return@setOnItemSelectedListener true
                 }
-                R.id.navigation_notifications -> {
-                    Log.i(TAG, "Bottom Nav ClickEvent -> PAGE 4")
-
-                    return@setOnItemSelectedListener true
-                }
             }
             false
         }

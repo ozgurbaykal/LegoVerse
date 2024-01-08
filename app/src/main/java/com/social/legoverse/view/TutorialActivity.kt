@@ -36,7 +36,6 @@ class TutorialActivity : AppCompatActivity(), TutorialPageListener {
     override fun onNextPage() {
         val currentItem = viewPager.currentItem
         if (currentItem < 4) {
-            // Move to next page
             viewPager.currentItem = currentItem + 1
         }
     }

@@ -35,6 +35,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
     private val binding get() = _binding!!
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var nothingSharedTextView: TextView
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,6 +53,9 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
 
             val postAdapter = PostAdapter(posts, requireContext())
             recyclerView.adapter = postAdapter
+
+            if(posts.isEmpty())
+                nothingSharedTextView.visibility = View.VISIBLE
         }
 
 
@@ -69,7 +73,7 @@ class HomeFragment : Fragment(R.layout.home_fragment) {
         val view = binding.root
 
         recyclerView = binding.recyclerViewPosts
-
+        nothingSharedTextView = binding.nothingSharedText
         return view
     }
 
