@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -35,6 +36,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
 
     private var mailOrUserName: String = ""
+    var isLegoVerseYellow = true
+    var isFollowYellow = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +80,27 @@ class MainActivity : AppCompatActivity() {
                     }
                     true
                 }
+
+                R.id.notifLegoVerse -> {
+                    isLegoVerseYellow = !isLegoVerseYellow
+                    if (isLegoVerseYellow) {
+                        menuItem.icon = ContextCompat.getDrawable(this, R.drawable.lego_yellow)
+                    } else {
+                        menuItem.icon = ContextCompat.getDrawable(this, R.drawable.lego_green)
+                    }
+                    true
+                }
+
+                R.id.notifFollow -> {
+                    isFollowYellow = !isFollowYellow
+                    if (isFollowYellow) {
+                        menuItem.icon = ContextCompat.getDrawable(this, R.drawable.follow_yellow)
+                    } else {
+                        menuItem.icon = ContextCompat.getDrawable(this, R.drawable.follow_green)
+                    }
+                    true
+                }
+
 
                 else -> false
             }

@@ -14,6 +14,21 @@
         android:icon="@drawable/baseline_highlight_off_24"
         android:title="Log out" />
 
+    <item android:name="android:paddingLeft"
+        android:title="">16dp</item>
+    <item android:name="android:paddingLeft"
+        android:title="">16dp</item>
 
+    <item
+        android:icon="@drawable/baseline_notifications_none_24"
+        android:title="Notification" />
 
+    <item
+        android:id="@+id/notifLegoVerse"
+            android:icon="@drawable/lego_yellow"
+        android:title="LegoVerse" />
+    <item
+        android:id="@+id/notifFollow"
+        android:icon="@drawable/follow_yellow"
+        android:title="Following" />
 </menu>
