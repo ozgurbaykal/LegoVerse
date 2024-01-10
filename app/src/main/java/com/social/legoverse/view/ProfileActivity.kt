@@ -1,11 +1,13 @@
 package com.social.legoverse.view
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
@@ -35,6 +37,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var birthDay: TextView
     private lateinit var user: Users
     private lateinit var topBar : Toolbar
+    private lateinit var editProfileButton : Button
 
     private var isFromMain: Boolean= false
     private lateinit var userNameOrMailChoose: String
@@ -53,6 +56,7 @@ class ProfileActivity : AppCompatActivity() {
         realName = binding.realName
         birthDay = binding.birthDay
         topBar = binding.toolbar
+        editProfileButton = binding.editProfile
 
         setSupportActionBar(topBar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -69,13 +73,23 @@ class ProfileActivity : AppCompatActivity() {
 
             isFromMain = intent.getBooleanExtra("is_from_main", false)
 
-            Log.i("ProfileActivity", "isFromMain: $isFromMain")
+
 
             if(isFromMain){
                 if (intent.getIntExtra("user_id", -1) != -1)
                     user = userDao.findUserWithId(intent.getIntExtra("user_id", -1))!!
             }else{
                 user = userDao.findUserByUsernameOrEmail(UserNameOrMail.userNameOrMail)!!
+            }
+
+            if(user.userName == UserNameOrMail.userNameOrMail || user.mail == UserNameOrMail.userNameOrMail){
+                editProfileButton.visibility = View.VISIBLE
+            }
+
+            editProfileButton.setOnClickListener {
+                val intent = Intent (this@ProfileActivity, EditProfileActivity::class.java)
+                startActivity(intent)
+                finish()
             }
 
 
@@ -86,10 +100,14 @@ class ProfileActivity : AppCompatActivity() {
                 recyclerView.adapter = postAdapter
 
                 val bitmapProfile = user.profileImage?.let { byteArrayToBitmap(it) }
-                imageViewProfile.setImageBitmap(bitmapProfile)
 
-                userName.text = user.userName
-                realName.text = user.name
+                runOnUiThread {
+                    imageViewProfile.setImageBitmap(bitmapProfile)
+
+                    userName.text = user.userName
+                    realName.text = user.name
+                }
+
 
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 

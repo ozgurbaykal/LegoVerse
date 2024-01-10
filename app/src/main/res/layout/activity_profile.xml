@@ -76,6 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
+        android:visibility="gone"
         android:layout_marginStart="95dp"
         android:layout_marginEnd="95dp"
         android:background="@drawable/button_border_with_color"

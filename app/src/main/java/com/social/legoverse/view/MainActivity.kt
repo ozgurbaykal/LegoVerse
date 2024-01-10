@@ -44,8 +44,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        changeFragment(HomeFragment(), R.id.mainActivityContainer,"HomeFragmentTAG")
-
 
         bottomNav = binding.bottomNavigation
 
@@ -63,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         }
         navigationView.itemIconTintList = null
+
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
