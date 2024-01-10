@@ -49,6 +49,7 @@ class ProfilePostAdapter(private val user: Users, private val posts: List<Post>,
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = posts[position]
+        Log.i("ProfilePostAdapter", "onBindViewHolder() -> ")
 
         holder.textViewPostContent.text = post.content
         holder.textViewProjectNameContent.text = post.projectName
@@ -65,14 +66,34 @@ class ProfilePostAdapter(private val user: Users, private val posts: List<Post>,
 
         val userDao = AppDatabase.getDatabase(context).userDao()
         val postDao = AppDatabase.getDatabase(context).postDao()
+        val commentDao = AppDatabase.getDatabase(context).commentDao()
+        val likeDao = AppDatabase.getDatabase(context).likeDao()
 
         CoroutineScope(Dispatchers.IO).launch {
             val users = userDao.findUserWithId(post.userId)
-            Log.i("PostAdapter", "users: $users")
                     withContext(Dispatchers.Main) {
                         if (users != null) {
-                            if(users.userName == UserNameOrMail.userNameOrMail || users.mail == UserNameOrMail.userNameOrMail)
+                            if(users.userName == UserNameOrMail.userNameOrMail || users.mail == UserNameOrMail.userNameOrMail){
                                 holder.deletePost.visibility = View.VISIBLE
+
+                                holder.deletePost.setOnClickListener {
+                                    CoroutineScope(Dispatchers.IO).launch {
+                                        postDao.deletePost(post)
+                                        commentDao.deleteCommentWithPostId(post.postId)
+                                        likeDao.deleteLikeWithPostId(post.postId)
+
+                                        (posts as MutableList).removeAt(holder.adapterPosition)
+
+                                        withContext(Dispatchers.Main) {
+                                            notifyItemRemoved(holder.adapterPosition)
+                                            notifyItemRangeChanged(holder.adapterPosition, posts.size)
+                                        }
+                                    }
+                                }
+
+
+                            }
+
 
                             Log.i("PostAdapter", "users != null")
                             val bitmapPost = post.image?.let { it1 -> byteArrayToBitmap(it1) }

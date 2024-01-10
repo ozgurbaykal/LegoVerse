@@ -20,4 +20,7 @@ interface LikeDao {
 
     @Delete
     fun deleteLike(like: Like)
+
+    @Query("DELETE FROM `like` WHERE postId = :postId")
+    fun deleteLikeWithPostId(postId: Int)
 }

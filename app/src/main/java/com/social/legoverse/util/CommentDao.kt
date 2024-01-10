@@ -15,4 +15,6 @@ interface CommentDao {
     @Insert
     fun insert(comment: Comment)
 
+    @Query("DELETE FROM comment WHERE postId = :postId")
+    fun deleteCommentWithPostId(postId: Int)
 }
