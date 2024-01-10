@@ -25,8 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostAdapter(private val posts: List<Post>, private val context: Context) :
-    RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class ProfilePostAdapter(private val user: Users, private val posts: List<Post>, private val context: Context) :
+    RecyclerView.Adapter<ProfilePostAdapter.PostViewHolder>() {
 
     class PostViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageViewProfile: ImageView = view.findViewById(R.id.imageViewProfile)
@@ -37,12 +37,13 @@ class PostAdapter(private val posts: List<Post>, private val context: Context) :
         val likeButton: ImageView = view.findViewById(R.id.likeButton)
         val textViewProjectNameContent: TextView = view.findViewById(R.id.textViewProjectName)
         val postItemCard: CardView = view.findViewById(R.id.postItemCard)
+        val deletePost: ImageView = view.findViewById(R.id.deleteButton)
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_post, parent, false)
+            .inflate(R.layout.item_post_profile, parent, false)
         return PostViewHolder(view)
     }
 
@@ -62,36 +63,30 @@ class PostAdapter(private val posts: List<Post>, private val context: Context) :
 
         }
 
-        holder.imageViewProfile.setOnClickListener {
-            val intent = Intent (context, ProfileActivity::class.java)
-            intent.putExtra("is_from_main", true)
-            intent.putExtra("user_id", post.userId)
-            context.startActivity(intent)
-
-        }
-
         val userDao = AppDatabase.getDatabase(context).userDao()
         val postDao = AppDatabase.getDatabase(context).postDao()
 
         CoroutineScope(Dispatchers.IO).launch {
             val users = userDao.findUserWithId(post.userId)
             Log.i("PostAdapter", "users: $users")
+                    withContext(Dispatchers.Main) {
+                        if (users != null) {
+                            if(users.userName == UserNameOrMail.userNameOrMail || users.mail == UserNameOrMail.userNameOrMail)
+                                holder.deletePost.visibility = View.VISIBLE
 
-            withContext(Dispatchers.Main) {
-                if (users != null) {
-                    Log.i("PostAdapter", "users != null")
-                    val bitmapPost = post.image?.let { it1 -> byteArrayToBitmap(it1) }
-                    holder.imageViewPostImage.setImageBitmap(bitmapPost)
-                    holder.textViewUsername.text = users.userName
+                            Log.i("PostAdapter", "users != null")
+                            val bitmapPost = post.image?.let { it1 -> byteArrayToBitmap(it1) }
+                            holder.imageViewPostImage.setImageBitmap(bitmapPost)
+                            holder.textViewUsername.text = users.userName
 
-                    users.profileImage?.let {
-                        Log.i("PostAdapter", "users.profileImage?.let")
+                            users.profileImage?.let {
+                                Log.i("PostAdapter", "users.profileImage?.let")
 
-                        val bitmapProfile = byteArrayToBitmap(users.profileImage)
-                        holder.imageViewProfile.setImageBitmap(bitmapProfile)
+                                val bitmapProfile = byteArrayToBitmap(users.profileImage)
+                                holder.imageViewProfile.setImageBitmap(bitmapProfile)
+                            }
+                        }
                     }
-                }
-            }
         }
 
         CoroutineScope(Dispatchers.IO).launch {

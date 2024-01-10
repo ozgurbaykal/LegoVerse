@@ -48,7 +48,6 @@ class MainActivity : AppCompatActivity() {
 
 
         bottomNav = binding.bottomNavigation
-        topBar = binding.toolbar
 
         drawerLayout = binding.drawerLayout
         topBar = binding.toolbar
@@ -146,6 +145,14 @@ class MainActivity : AppCompatActivity() {
                     mailOrUserName = intent.getStringExtra("user_name_or_mail").toString()
 
                     val intent = Intent (this@MainActivity, AddPostActivity::class.java)
+                    startActivity(intent)
+
+                    return@setOnItemSelectedListener true
+                }
+                R.id.navigation_profile -> {
+                    Log.i(TAG, "Bottom Nav ClickEvent -> PAGE 4")
+
+                    val intent = Intent (this@MainActivity, ProfileActivity::class.java)
                     startActivity(intent)
 
                     return@setOnItemSelectedListener true

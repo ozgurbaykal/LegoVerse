@@ -15,8 +15,12 @@ interface PostDao {
     @Query("SELECT * FROM post WHERE userId = :userId")
     fun getPostsByUser(userId: Int): List<Post>
 
+
     @Query("SELECT * FROM post WHERE postId = :postId")
     fun getPostsById(postId: Int): Post
+
+    @Query("SELECT * FROM post WHERE userId = :userId")
+    fun getPostsListById(userId: Int): List<Post>
 
     @Query("UPDATE post SET likes = :likeCount WHERE postId= :postId")
     fun updatePostLikes(postId: Int,likeCount: Int)

@@ -11,4 +11,8 @@
         android:id="@+id/navigation_add"
         android:icon="@drawable/add"
         android:title="Add" />
+    <item
+        android:id="@+id/navigation_profile"
+        android:icon="@drawable/legoheadprofile"
+        android:title="Profile" />
 </menu>
